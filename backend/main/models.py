@@ -81,5 +81,8 @@ class User(AbstractUser):
         return f'{self.first_name} {self.last_name}'
 
 
-
-
+class ActivationKey(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    key = models.CharField(max_length=8, unique=True)
+    is_confirmed = models.BooleanField(default=False)
+    expiration_datetime = models.DateTimeField()
