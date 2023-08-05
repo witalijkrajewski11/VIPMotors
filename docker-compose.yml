@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  django:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/:/usr/src/backend/
+    command: bash -c "
+      python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+
+  mailcatcher:
+    image: dockage/mailcatcher:0.7.1
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+  redis:
+    image: redis
+
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: bash -c "
+      celery -A backend.celery_tasks worker --beat -l info -c 1 -S redbeat.RedBeatScheduler"
+    volumes:
+      - ./backend/:/usr/src/backend/
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - django
+
+volumes:
+  postgres_data:
