@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'users.apps.UsersConfig',
+    'main.apps.MainConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,6 +49,8 @@ INSTALLED_APPS = [
 CORS_ALLOWED_ORIGINS = [
     os.environ.get('FRONTEND_URL')
 ]
+
+AUTH_USER_MODEL = 'main.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
