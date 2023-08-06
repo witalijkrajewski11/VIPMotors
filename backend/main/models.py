@@ -13,10 +13,6 @@ from main import constants
 class MyUserManager(BaseUserManager):
 
     def create_user(self, email, password=None):
-        """
-        Creates and saves a User with the given email, date of
-        birth and password.
-        """
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -30,10 +26,6 @@ class MyUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None):
-        """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
-        """
         user = self.create_user(
             email,
             password=password,
