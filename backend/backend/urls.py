@@ -14,6 +14,7 @@ from vm_auth.views import CustomAuthToken
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('main.urls')),
+    path('api/', include('cars.urls')),
     path('api/token/', CustomAuthToken.as_view(), name='simple_token_obtain'),
     path('openapi', get_schema_view(
         title="PBM",
